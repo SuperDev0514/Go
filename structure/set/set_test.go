@@ -82,6 +82,16 @@ func TestIsSubsetOf(t *testing.T) {
 	}
 }
 
+func TestIsProperSubsetOf(t *testing.T) {
+	s1, s2 := New(1, 2, 3), New(1, 2, 3, 4)
+	if !s1.IsProperSubsetOf(s2) {
+		t.Errorf("expecting %v to be a proper subset of %v", s1, s2)
+	}
+	if s3 := New(3, 2, 1); s1.IsProperSubsetOf(s3) {
+		t.Errorf("expecting %v not to be a proper subset of %v", s1, s3)
+	}
+}
+
 func TestIsSupersetOf(t *testing.T) {
 	s1, s2 := New(1, 2, 3), New(1, 2, 3, 4)
 	if !s2.IsSupersetOf(s1) {
@@ -95,12 +105,22 @@ func TestIsSupersetOf(t *testing.T) {
 	}
 }
 
+func TestIsProperSupersetOf(t *testing.T) {
+	s1, s2 := New(1, 2, 3), New(1, 2, 3, 4)
+	if !s2.IsProperSupersetOf(s1) {
+		t.Errorf("expecting %v to be a proper superset of %v", s2, s1)
+	}
+	if s3 := New(3, 2, 1); s1.IsProperSupersetOf(s3) {
+		t.Errorf("expecting %v not to be a proper superset of %v", s1, s3)
+	}
+}
+
 func TestUnion(t *testing.T) {
 	td := []struct {
 		name   string
-		s1     Set
-		s2     Set
-		expSet Set
+		s1     Set[int]
+		s2     Set[int]
+		expSet Set[int]
 	}{
 		{"union of different sets", New(1, 2, 3), New(4, 5, 6), New(1, 2, 3, 4, 5, 6)},
 		{"union of sets with elements in common", New(1, 2, 3), New(1, 2, 4), New(1, 2, 3, 4)},
@@ -124,11 +144,11 @@ func TestUnion(t *testing.T) {
 func TestIntersection(t *testing.T) {
 	td := []struct {
 		name   string
-		s1     Set
-		s2     Set
-		expSet Set
+		s1     Set[int]
+		s2     Set[int]
+		expSet Set[int]
 	}{
-		{"intersection of different sets", New(0, 1, 2, 3), New(4, 5, 6), New()},
+		{"intersection of different sets", New(0, 1, 2, 3), New(4, 5, 6), New[int]()},
 		{"intersection of sets with elements in common", New(1, 2, 3), New(1, 2, 4), New(1, 2)},
 		{"intersection of same sets", New(1, 2, 3), New(1, 2, 3), New(1, 2, 3)},
 	}
@@ -150,13 +170,13 @@ func TestIntersection(t *testing.T) {
 func TestDifference(t *testing.T) {
 	td := []struct {
 		name   string
-		s1     Set
-		s2     Set
-		expSet Set
+		s1     Set[int]
+		s2     Set[int]
+		expSet Set[int]
 	}{
 		{"difference of different sets", New(1, 2, 3), New(4, 5, 6), New(1, 2, 3)},
 		{"difference of sets with elements in common", New(1, 2, 3), New(1, 2, 4), New(3)},
-		{"difference of same sets", New(1, 2, 3), New(1, 2, 3), New()},
+		{"difference of same sets", New(1, 2, 3), New(1, 2, 3), New[int]()},
 	}
 	for _, tc := range td {
 		t.Run(tc.name, func(t *testing.T) {
@@ -176,13 +196,13 @@ func TestDifference(t *testing.T) {
 func TestSymmetricDifference(t *testing.T) {
 	td := []struct {
 		name   string
-		s1     Set
-		s2     Set
-		expSet Set
+		s1     Set[int]
+		s2     Set[int]
+		expSet Set[int]
 	}{
 		{"symmetric difference of different sets", New(1, 2, 3), New(4, 5, 6), New(1, 2, 3, 4, 5, 6)},
 		{"symmetric difference of sets with elements in common", New(1, 2, 3), New(1, 2, 4), New(3, 4)},
-		{"symmetric difference of same sets", New(1, 2, 3), New(1, 2, 3), New()},
+		{"symmetric difference of same sets", New(1, 2, 3), New(1, 2, 3), New[int]()},
 	}
 	for _, tc := range td {
 		t.Run(tc.name, func(t *testing.T) {

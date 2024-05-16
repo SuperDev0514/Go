@@ -37,6 +37,7 @@ func BinaryIterative(array []int, target int) (int, error) {
 	return -1, ErrNotFound
 }
 
+
 // Returns index to the first element in the range [0, len(array)-1] that is not less than (i.e. greater or equal to) target.
 // return -1 and ErrNotFound if no such element is found.
 func LowerBound(array []int, target int) (int, error) {

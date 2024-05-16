@@ -1,3 +1,4 @@
+
 // Segment Tree Data Structure for Range Queries
 // Build: O(n*log(n))
 // Query: O(log(n))
@@ -13,12 +14,14 @@ import (
 
 const emptyLazyNode = 0
 
+
 // SegmentTree with original Array and the Segment Tree Array
 type SegmentTree struct {
-	Array       []int
-	SegmentTree []int
-	LazyTree    []int
+	Array       []int // The original array
+	SegmentTree []int // Stores the sum of different ranges
+	LazyTree    []int // Stores the values of lazy propagation
 }
+
 
 // Propagate lazy tree node values
 func (s *SegmentTree) Propagate(node int, leftNode int, rightNode int) {
@@ -41,6 +44,7 @@ func (s *SegmentTree) Propagate(node int, leftNode int, rightNode int) {
 		s.LazyTree[node] = emptyLazyNode
 	}
 }
+
 
 // Query on interval [firstIndex, leftIndex]
 // node, leftNode and rightNode always should start with 1, 0 and len(Array)-1
@@ -66,6 +70,7 @@ func (s *SegmentTree) Query(node int, leftNode int, rightNode int, firstIndex in
 
 	return leftNodeSum + rightNodeSum
 }
+
 
 // Update Segment Tree
 // node, leftNode and rightNode always should start with 1, 0 and len(Array)-1
@@ -96,6 +101,7 @@ func (s *SegmentTree) Update(node int, leftNode int, rightNode int, firstIndex i
 	}
 }
 
+
 // Build Segment Tree
 // node, leftNode and rightNode always should start with 1, 0 and len(Array)-1
 func (s *SegmentTree) Build(node int, left int, right int) {
@@ -113,6 +119,8 @@ func (s *SegmentTree) Build(node int, left int, right int) {
 	}
 }
 
+// NewSegmentTree returns a new instance of a SegmentTree. It takes an input
+// array of integers representing Array, initializes and builds the SegmentTree.
 func NewSegmentTree(Array []int) *SegmentTree {
 	if len(Array) == 0 {
 		return nil
